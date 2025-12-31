@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SiteWarming - Broker Referral System Demo</title>
+  <style>
+    /* Reset & Base */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f3f4f6; min-height: 100vh; color: #1f2937; line-height: 1.5; }
+    
+    /* Utilities */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    .flex { display: flex; }
+    .flex-col { flex-direction: column; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .justify-center { justify-content: center; }
+    .gap-1 { gap: 0.25rem; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-3 { gap: 0.75rem; }
+    .gap-4 { gap: 1rem; }
+    .gap-6 { gap: 1.5rem; }
+    .flex-1 { flex: 1; }
+    .flex-wrap { flex-wrap: wrap; }
+    .grid { display: grid; }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+    .grid-5 { grid-template-columns: repeat(5, 1fr); }
+    .text-center { text-align: center; }
+    .text-sm { font-size: 0.875rem; }
+    .text-xs { font-size: 0.75rem; }
+    .text-lg { font-size: 1.125rem; }
+    .text-xl { font-size: 1.25rem; }
+    .text-2xl { font-size: 1.5rem; }
+    .text-3xl { font-size: 1.875rem; }
+    .font-medium { font-weight: 500; }
+    .font-semibold { font-weight: 600; }
+    .font-bold { font-weight: 700; }
+    .text-white { color: white; }
+    .text-gray-400 { color: #9ca3af; }
+    .text-gray-500 { color: #6b7280; }
+    .text-gray-600 { color: #4b5563; }
+    .text-gray-700 { color: #374151; }
+    .text-gray-900 { color: #111827; }
+    .text-indigo-600 { color: #4f46e5; }
+    .text-indigo-700 { color: #4338ca; }
+    .text-green-600 { color: #16a34a; }
+    .text-green-700 { color: #15803d; }
+    .text-green-800 { color: #166534; }
+    .text-orange-600 { color: #ea580c; }
+    .text-red-600 { color: #dc2626; }
+    .text-yellow-600 { color: #ca8a04; }
+    .text-yellow-700 { color: #a16207; }
+    .text-yellow-800 { color: #854d0e; }
+    .text-blue-600 { color: #2563eb; }
+    .text-blue-800 { color: #1e40af; }
+    .bg-white { background: white; }
+    .bg-gray-50 { background: #f9fafb; }
+    .bg-gray-100 { background: #f3f4f6; }
+    .bg-gray-200 { background: #e5e7eb; }
+    .bg-indigo-50 { background: #eef2ff; }
+    .bg-indigo-100 { background: #e0e7ff; }
+    .bg-indigo-600 { background: #4f46e5; }
+    .bg-green-50 { background: #f0fdf4; }
+    .bg-green-100 { background: #dcfce7; }
+    .bg-green-500 { background: #22c55e; }
+    .bg-green-600 { background: #16a34a; }
+    .bg-orange-100 { background: #ffedd5; }
+    .bg-orange-600 { background: #ea580c; }
+    .bg-yellow-50 { background: #fefce8; }
+    .bg-yellow-100 { background: #fef9c3; }
+    .bg-red-50 { background: #fef2f2; }
+    .bg-red-100 { background: #fee2e2; }
+    .bg-blue-50 { background: #eff6ff; }
+    .bg-blue-100 { background: #dbeafe; }
+    .rounded { border-radius: 0.25rem; }
+    .rounded-lg { border-radius: 0.5rem; }
+    .rounded-xl { border-radius: 0.75rem; }
+    .rounded-2xl { border-radius: 1rem; }
+    .rounded-full { border-radius: 9999px; }
+    .border { border: 1px solid #e5e7eb; }
+    .border-2 { border: 2px solid #e5e7eb; }
+    .border-b { border-bottom: 1px solid #e5e7eb; }
+    .border-t { border-top: 1px solid #e5e7eb; }
+    .border-indigo-500 { border-color: #6366f1; }
+    .border-green-100 { border-color: #dcfce7; }
+    .border-green-200 { border-color: #bbf7d0; }
+    .border-yellow-200 { border-color: #fef08a; }
+    .border-red-300 { border-color: #fca5a5; }
+    .border-orange-500 { border-color: #f97316; }
+    .border-transparent { border-color: transparent; }
+    .shadow-sm { box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+    .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+    .p-2 { padding: 0.5rem; }
+    .p-3 { padding: 0.75rem; }
+    .p-4 { padding: 1rem; }
+    .p-6 { padding: 1.5rem; }
+    .p-8 { padding: 2rem; }
+    .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+    .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+    .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    .px-5 { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+    .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+    .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+    .py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+    .mb-1 { margin-bottom: 0.25rem; }
+    .mb-2 { margin-bottom: 0.5rem; }
+    .mb-3 { margin-bottom: 0.75rem; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-6 { margin-bottom: 1.5rem; }
+    .mt-1 { margin-top: 0.25rem; }
+    .mt-2 { margin-top: 0.5rem; }
+    .mt-4 { margin-top: 1rem; }
+    .mt-6 { margin-top: 1.5rem; }
+    .mx-2 { margin-left: 0.5rem; margin-right: 0.5rem; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .w-full { width: 100%; }
+    .w-2 { width: 0.5rem; }
+    .w-4 { width: 1rem; }
+    .w-5 { width: 1.25rem; }
+    .w-8 { width: 2rem; }
+    .w-10 { width: 2.5rem; }
+    .w-12 { width: 3rem; }
+    .w-14 { width: 3.5rem; }
+    .w-16 { width: 4rem; }
+    .w-20 { width: 5rem; }
+    .w-32 { width: 8rem; }
+    .h-1 { height: 0.25rem; }
+    .h-2 { height: 0.5rem; }
+    .h-4 { height: 1rem; }
+    .h-5 { height: 1.25rem; }
+    .h-8 { height: 2rem; }
+    .h-10 { height: 2.5rem; }
+    .h-12 { height: 3rem; }
+    .h-14 { height: 3.5rem; }
+    .h-16 { height: 4rem; }
+    .h-20 { height: 5rem; }
+    .min-w-max { min-width: max-content; }
+    .overflow-hidden { overflow: hidden; }
+    .overflow-x-auto { overflow-x: auto; }
+    .whitespace-nowrap { white-space: nowrap; }
+    .cursor-pointer { cursor: pointer; }
+    .cursor-not-allowed { cursor: not-allowed; }
+    .opacity-50 { opacity: 0.5; }
+    .uppercase { text-transform: uppercase; }
+    .tracking-wide { letter-spacing: 0.025em; }
+    .divide-y > * + * { border-top: 1px solid #e5e7eb; }
+    .space-y-1 > * + * { margin-top: 0.25rem; }
+    .space-y-2 > * + * { margin-top: 0.5rem; }
+    .space-y-3 > * + * { margin-top: 0.75rem; }
+    .space-y-4 > * + * { margin-top: 1rem; }
+    .space-y-6 > * + * { margin-top: 1.5rem; }
+    .sticky { position: sticky; top: 0; }
+    .fixed { position: fixed; }
+    .z-50 { z-index: 50; }
+    .top-20 { top: 5rem; }
+    .right-4 { right: 1rem; }
+    .inline { display: inline; }
+    .inline-flex { display: inline-flex; }
+    .hidden { display: none; }
+    .block { display: block; }
+    
+    /* Buttons */
+    button { cursor: pointer; border: none; background: none; font-family: inherit; font-size: inherit; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 500; transition: all 0.2s; }
+    .btn-primary { background: #4f46e5; color: white; }
+    .btn-primary:hover { background: #4338ca; }
+    .btn-green { background: #16a34a; color: white; }
+    .btn-green:hover { background: #15803d; }
+    .btn-orange { background: #ea580c; color: white; }
+    .btn-orange:hover { background: #c2410c; }
+    .btn-outline { background: white; border: 1px solid #e5e7eb; color: #374151; }
+    .btn-outline:hover { background: #f9fafb; }
+    .btn-outline-red { background: white; border: 1px solid #fca5a5; color: #dc2626; }
+    .btn-outline-red:hover { background: #fef2f2; }
+    .btn-disabled { background: #f3f4f6; color: #9ca3af; cursor: not-allowed; }
+    
+    /* Form elements */
+    input, select, textarea { padding: 0.5rem 1rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; font-family: inherit; font-size: 0.875rem; width: 100%; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
+    
+    /* Gradients */
+    .gradient-purple { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .gradient-green { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+    .gradient-blue { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); }
+    
+    /* Animations */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    .animate-spin { animation: spin 1s linear infinite; }
+    .animate-pulse { animation: pulse 2s ease-in-out infinite; }
+    .animate-fadeIn { animation: fadeIn 0.3s ease-out; }
+    .animate-slideIn { animation: slideIn 0.3s ease-out; }
+    
+    /* Spinner */
+    .spinner { width: 1rem; height: 1rem; border: 2px solid #fbbf24; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
+    
+    /* Hover effects */
+    .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+    .hover-bg:hover { background: #f9fafb; }
+    
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .lg-grid-2 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .md-grid-1 { grid-template-columns: 1fr; }
+      .grid-3 { grid-template-columns: 1fr; }
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .grid-5 { grid-template-columns: repeat(2, 1fr); }
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #a1a1a1; }
+    
+    /* Table */
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; }
+    th { font-size: 0.75rem; font-weight: 500; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; }
+    
+    /* Tabs */
+    .tab { padding: 1rem 1.5rem; font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.2s; }
+    .tab:hover { color: #374151; }
+    .tab.active { border-bottom-color: #f97316; color: #ea580c; }
+    
+    /* Badge */
+    .badge { display: inline-flex; align-items: center; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; }
+    .badge-yellow { background: #fef9c3; color: #854d0e; border: 1px solid #fef08a; }
+    .badge-blue { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+    .badge-green { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+    .badge-red { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    .badge-orange { background: #ffedd5; color: #9a3412; }
+    
+    /* Card */
+    .card { background: white; border: 1px solid #e5e7eb; border-radius: 0.75rem; }
+    
+    /* SVG Icons */
+    .icon { display: inline-block; vertical-align: middle; flex-shrink: 0; }
+    .icon svg { display: block; }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    // ============================================
+    // SVG ICONS (Inline - No External Dependencies)
+    // ============================================
+    const icons = {
+      flame: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>`,
+      building: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>`,
+      userCheck: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>`,
+      shield: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+      users: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+      clock: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+      check: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+      checkCircle: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`,
+      x: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>`,
+      xCircle: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" x2="9" y1="9" y2="15"/><line x1="9" x2="15" y1="9" y2="15"/></svg>`,
+      arrowRight: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" x2="19" y1="12" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`,
+      arrowLeft: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="5" y1="12" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>`,
+      play: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>`,
+      rotateCcw: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>`,
+      mail: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>`,
+      messageSquare: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
+      timer: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg>`,
+      percent: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="5" y1="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>`,
+      landmark: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>`,
+      fileText: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>`,
+      inbox: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>`,
+      userPlus: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>`,
+      plus: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>`,
+      externalLink: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>`,
+      mapPin: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>`,
+      info: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>`,
+      alertTriangle: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>`,
+      handshake: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>`,
+      eye: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>`,
+      gitBranch: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" x2="6" y1="3" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>`,
+      layout: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><line x1="3" x2="21" y1="9" y2="9"/><line x1="9" x2="9" y1="21" y2="9"/></svg>`,
+    };
+
+    function icon(name, size = 20, colorClass = '') {
+      const svg = icons[name] || icons.info;
+      const colored = svg.replace('width="24"', `width="${size}"`).replace('height="24"', `height="${size}"`);
+      return `<span class="icon ${colorClass}" style="width:${size}px;height:${size}px;">${colored}</span>`;
+    }
+
+    // ============================================
+    // STATE
+    // ============================================
+    const state = {
+      currentView: 'overview',
+      ownerStep: 1,
+      brokerStep: 1,
+      adminTab: 'applications',
+      isAutoPlaying: false,
+      notifications: [],
+      pendingApplications: [
+        { id: 1, name: 'Sarah Johnson', email: 'sarah@brokers.com', specialties: ['SaaS', 'Tech'], experience: '5+ years', status: 'pending' },
+        { id: 2, name: 'Mike Chen', email: 'mike@domains.net', specialties: ['E-commerce', 'Retail'], experience: '3-5 years', status: 'pending' },
+      ],
+      brokerQueue: [
+        { id: 1, domain: 'techstartup.io', valuation: 25000, category: 'SaaS', owner: 'John D.', waitTime: '2h ago' },
+        { id: 2, domain: 'healthapp.com', valuation: 18500, category: 'Healthcare', owner: 'Emily R.', waitTime: '5h ago' },
+        { id: 3, domain: 'fintech.dev', valuation: 32000, category: 'Finance', owner: 'Alex M.', waitTime: '12h ago' },
+      ],
+      brokerDirectory: [
+        { id: 1, name: 'Rachel Martinez', email: 'rachel@domainbrokers.com', specialties: ['SaaS', 'Tech', 'Premium'], status: 'active', deals: 12, acceptRate: 95 },
+        { id: 2, name: 'James Wilson', email: 'james@brokers.io', specialties: ['E-commerce', 'Retail'], status: 'active', deals: 8, acceptRate: 88 },
+        { id: 3, name: 'Linda Park', email: 'linda@domainpro.com', specialties: ['Healthcare', 'Finance'], status: 'active', deals: 6, acceptRate: 85 },
+      ],
+    };
+
+    const mockDomain = { name: 'techstartup.io', valuation: 25000, category: 'SaaS', monthlyPageviews: 5200 };
+    const mockBroker = { name: 'Rachel Martinez', email: 'rachel@domainbrokers.com', specialties: ['SaaS', 'Tech', 'Premium Domains'] };
+
+    // ============================================
+    // UTILITIES
+    // ============================================
+    function setState(updates) {
+      Object.assign(state, updates);
+      render();
+    }
+
+    function addNotification(message, type = 'info') {
+      const id = Date.now();
+      state.notifications.push({ id, message, type });
+      render();
+      setTimeout(() => {
+        state.notifications = state.notifications.filter(n => n.id !== id);
+        render();
+      }, 3000);
+    }
+
+    // ============================================
+    // HEADER
+    // ============================================
+    function renderHeader() {
+      return `
+        <header class="bg-white border-b sticky z-50" style="top:0">
+          <div class="container py-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 gradient-purple rounded-xl flex items-center justify-center">
+                  ${icon('flame', 24, 'text-white')}
+                </div>
+                <div>
+                  <h1 class="text-xl font-bold text-gray-900">SiteWarming</h1>
+                  <p class="text-xs text-gray-500">Broker Referral System Demo</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <a href="https://sitewarming.com" target="_blank" class="btn btn-outline text-sm">
+                  ${icon('externalLink', 14)}
+                  Live Site
+                </a>
+                <button onclick="startAutoDemo()" class="btn btn-primary text-sm ${state.isAutoPlaying ? 'opacity-50 cursor-not-allowed' : ''}">
+                  ${icon('play', 16)}
+                  ${state.isAutoPlaying ? 'Playing...' : 'Auto Demo'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </header>
+      `;
+    }
+
+    // ============================================
+    // NAV TABS
+    // ============================================
+    function renderNavTabs() {
+      const tabs = [
+        { id: 'overview', label: 'Overview', iconName: 'layout' },
+        { id: 'owner', label: 'Domain Owner', iconName: 'building' },
+        { id: 'broker', label: 'Broker', iconName: 'userCheck' },
+        { id: 'admin', label: 'Admin', iconName: 'shield' },
+      ];
+      return `
+        <div class="bg-white border-b">
+          <div class="container">
+            <div class="flex gap-1 overflow-x-auto py-2">
+              ${tabs.map(tab => `
+                <button onclick="setState({ currentView: '${tab.id}' })" 
+                  class="btn ${state.currentView === tab.id ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover-bg'}">
+                  ${icon(tab.iconName, 18)}
+                  ${tab.label}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ============================================
+    // OVERVIEW
+    // ============================================
+    function renderOverview() {
+      return `
+        <div class="container py-8 space-y-8">
+          <!-- Hero -->
+          <div class="gradient-purple rounded-2xl p-8 text-white">
+            <div style="max-width:700px">
+              <h2 class="text-3xl font-bold mb-3">Broker Referral System</h2>
+              <p class="text-lg mb-6" style="opacity:0.85">
+                A matchmaking service that connects domain owners with professional brokers to help sell their domains.
+              </p>
+              <div class="flex flex-wrap gap-3">
+                <button onclick="setState({ currentView: 'owner' })" class="btn bg-white text-indigo-600">
+                  ${icon('building', 18)} Explore Owner Flow
+                </button>
+                <button onclick="setState({ currentView: 'broker' })" class="btn" style="background:rgba(255,255,255,0.2)">
+                  ${icon('userCheck', 18)} Explore Broker Flow
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Three User Types -->
+          <div class="grid grid-3 gap-6 md-grid-1">
+            ${[
+              { id: 'owner', title: 'Domain Owner', desc: 'Has domains listed on SiteWarming and wants expert help selling them.', iconName: 'building', color: 'indigo' },
+              { id: 'broker', title: 'Broker', desc: 'Professional domain sales expert who earns 15% commission on sales.', iconName: 'userCheck', color: 'green' },
+              { id: 'admin', title: 'Admin', desc: 'SiteWarming staff who matches brokers to domain owners.', iconName: 'shield', color: 'orange' },
+            ].map(item => `
+              <div class="card p-6 cursor-pointer hover-lift" onclick="setState({ currentView: '${item.id}' })">
+                <div class="w-12 h-12 bg-${item.color}-100 rounded-xl flex items-center justify-center mb-4">
+                  ${icon(item.iconName, 24, `text-${item.color}-600`)}
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">${item.title}</h3>
+                <p class="text-gray-600 text-sm mb-4">${item.desc}</p>
+                <div class="flex items-center text-${item.color}-600 text-sm font-medium">
+                  View Journey ${icon('arrowRight', 16)}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+
+          <!-- Flow Diagram -->
+          <div class="card p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-6">Complete System Flow</h3>
+            <div class="overflow-x-auto">
+              <div class="flex items-start gap-4 min-w-max pb-4">
+                ${[
+                  { title: 'Owner Requests', desc: 'From Selling tab', iconName: 'userCheck', color: 'indigo' },
+                  { title: 'Admin Reviews', desc: 'Matches broker', iconName: 'eye', color: 'orange' },
+                  { title: 'Broker Invited', desc: '8-hour window', iconName: 'mail', color: 'blue' },
+                  { title: 'Broker Decides', desc: 'Accept or decline', iconName: 'gitBranch', color: 'purple' },
+                  { title: 'Partnership Active', desc: 'Work together', iconName: 'handshake', color: 'green' },
+                ].map((item, i) => `
+                  <div class="flex items-center">
+                    <div class="flex flex-col items-center w-32">
+                      <div class="w-14 h-14 bg-${item.color}-100 rounded-xl flex items-center justify-center mb-3">
+                        ${icon(item.iconName, 28, `text-${item.color}-600`)}
+                      </div>
+                      <p class="font-medium text-gray-900 text-center text-sm">${item.title}</p>
+                      <p class="text-xs text-gray-500 text-center mt-1">${item.desc}</p>
+                    </div>
+                    ${i < 4 ? '<div style="width:3rem;height:2px;background:#e5e7eb;margin-top:-40px"></div>' : ''}
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Metrics -->
+          <div class="grid grid-4 gap-4">
+            ${[
+              { label: 'Broker Commission', value: '15%', iconName: 'percent', color: 'green' },
+              { label: 'Platform Fee', value: '25%', iconName: 'landmark', color: 'blue' },
+              { label: 'Invite Window', value: '8 hrs', iconName: 'clock', color: 'orange' },
+              { label: 'Cooldown', value: '24 hrs', iconName: 'timer', color: 'red' },
+            ].map(item => `
+              <div class="card p-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 bg-${item.color}-100 rounded-lg flex items-center justify-center">
+                    ${icon(item.iconName, 20, `text-${item.color}-600`)}
+                  </div>
+                  <div>
+                    <p class="text-2xl font-bold text-gray-900">${item.value}</p>
+                    <p class="text-xs text-gray-500">${item.label}</p>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+
+          <!-- Owner States -->
+          <div class="card p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Owner's 5 States</h3>
+            <div class="grid grid-5 gap-3">
+              ${[
+                { state: 1, name: 'No Referral', badge: null, desc: 'Can request' },
+                { state: 2, name: 'Requested', badge: 'Pending', badgeClass: 'badge-yellow', desc: 'Waiting admin' },
+                { state: 3, name: 'Intro Sent', badge: 'Broker Invited', badgeClass: 'badge-blue', desc: '8hr countdown' },
+                { state: 4, name: 'Active', badge: 'Active', badgeClass: 'badge-green', desc: 'Partnership live' },
+                { state: 5, name: 'Cooldown', badge: 'Cooldown', badgeClass: 'badge-red', desc: '24hr lockout' },
+              ].map(item => `
+                <div class="p-4 rounded-lg border-2 cursor-pointer ${state.ownerStep === item.state ? 'border-indigo-500 bg-indigo-50' : 'hover-bg'}" 
+                  onclick="setState({ currentView: 'owner', ownerStep: ${item.state} })">
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-medium text-gray-400">State ${item.state}</span>
+                    ${item.badge ? `<span class="badge ${item.badgeClass}">${item.badge}</span>` : ''}
+                  </div>
+                  <p class="font-medium text-gray-900 text-sm">${item.name}</p>
+                  <p class="text-xs text-gray-500 mt-1">${item.desc}</p>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ============================================
+    // OWNER VIEW
+    // ============================================
+    function renderOwnerView() {
+      const steps = [
+        { id: 1, name: 'No Referral' },
+        { id: 2, name: 'Requested' },
+        { id: 3, name: 'Intro Sent' },
+        { id: 4, name: 'Active' },
+        { id: 5, name: 'Cooldown' },
+      ];
+
+      return `
+        <div class="container py-8">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
+              ${icon('building', 24, 'text-indigo-600')}
+            </div>
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900">Domain Owner Journey</h2>
+              <p class="text-gray-500">Experience the broker request flow</p>
+            </div>
+          </div>
+
+          <!-- Progress -->
+          <div class="card p-4 mb-6">
+            <div class="flex items-center justify-between">
+              ${steps.map((step, i) => `
+                <div class="flex items-center ${i < steps.length - 1 ? 'flex-1' : ''}">
+                  <button onclick="setState({ ownerStep: ${step.id} })" class="flex flex-col items-center cursor-pointer">
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center font-medium ${
+                      state.ownerStep === step.id ? 'bg-indigo-600 text-white' : 
+                      state.ownerStep > step.id ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600'
+                    }">
+                      ${state.ownerStep > step.id ? icon('check', 20) : step.id}
+                    </div>
+                    <p class="text-xs font-medium mt-2 ${state.ownerStep === step.id ? 'text-indigo-600' : 'text-gray-500'}">${step.name}</p>
+                  </button>
+                  ${i < steps.length - 1 ? `<div class="flex-1 h-1 mx-2 rounded ${state.ownerStep > step.id ? 'bg-green-500' : 'bg-gray-200'}"></div>` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <div class="grid gap-6 lg-grid-2" style="grid-template-columns: 1fr 1fr">
+            <!-- Left: Domain + Card -->
+            <div class="space-y-6">
+              <div class="gradient-purple rounded-xl p-6 text-white">
+                <div class="flex items-center gap-2 text-sm mb-3" style="opacity:0.7">
+                  ${icon('mapPin', 14)} My Domains → ${mockDomain.name} → Selling Tab
+                </div>
+                <h3 class="text-xl font-semibold mb-4">${mockDomain.name}</h3>
+                <div class="grid grid-2 gap-4">
+                  <div>
+                    <p style="opacity:0.6" class="text-xs">Valuation</p>
+                    <p class="text-xl font-bold">$${mockDomain.valuation.toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <p style="opacity:0.6" class="text-xs">Category</p>
+                    <p class="text-xl font-bold">${mockDomain.category}</p>
+                  </div>
+                </div>
+              </div>
+              ${renderBrokerReferralCard()}
+            </div>
+
+            <!-- Right: Description + Actions -->
+            <div class="space-y-6">
+              ${renderOwnerStateDescription()}
+              <div class="card p-6">
+                <h4 class="font-semibold text-gray-900 mb-4">Quick Actions</h4>
+                <div class="grid grid-2 gap-3">
+                  ${state.ownerStep > 1 ? `
+                    <button onclick="setState({ ownerStep: state.ownerStep - 1 })" class="btn btn-outline">
+                      ${icon('arrowLeft', 16)} Previous
+                    </button>
+                  ` : '<div></div>'}
+                  ${state.ownerStep < 5 ? `
+                    <button onclick="setState({ ownerStep: state.ownerStep + 1 })" class="btn btn-primary">
+                      Next ${icon('arrowRight', 16)}
+                    </button>
+                  ` : `
+                    <button onclick="setState({ ownerStep: 1 })" class="btn btn-primary">
+                      ${icon('rotateCcw', 16)} Reset
+                    </button>
+                  `}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderBrokerReferralCard() {
+      const badges = {
+        1: '',
+        2: '<span class="badge badge-yellow">Pending</span>',
+        3: '<span class="badge badge-blue">Broker Invited</span>',
+        4: '<span class="badge badge-green">Active</span>',
+        5: '<span class="badge badge-red">Cooldown</span>'
+      };
+
+      const content = {
+        1: `
+          <div class="space-y-4">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900">Get Expert Help Selling</h3>
+              <p class="text-sm text-gray-600 mt-1">Partner with a professional domain broker who specializes in your domain's category.</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <button onclick="setState({ ownerStep: 2 }); addNotification('Broker request submitted!', 'success')" class="btn btn-green">
+                ${icon('userCheck', 18)} Request Broker
+              </button>
+              <button class="text-sm text-blue-600">Learn more</button>
+            </div>
+          </div>
+        `,
+        2: `
+          <div class="space-y-4">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900">Finding You a Partner</h3>
+              <div class="flex items-center gap-2 mt-2 text-gray-600">
+                <div class="spinner"></div>
+                <span class="text-sm">We're matching you with a qualified broker...</span>
+              </div>
+            </div>
+            <p class="text-xs text-gray-500">Typical wait time: 12-24 hours</p>
+            <button onclick="setState({ ownerStep: 1 })" class="btn btn-outline">Cancel Request</button>
+          </div>
+        `,
+        3: `
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-gray-900">Awaiting Broker Response</h3>
+            <div class="bg-gray-50 rounded-lg p-4 border">
+              <div class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-semibold">R</div>
+                <div>
+                  <p class="font-medium text-gray-900">${mockBroker.name}</p>
+                  <p class="text-sm text-gray-500">${mockBroker.email}</p>
+                  <div class="flex flex-wrap gap-1 mt-2">
+                    ${mockBroker.specialties.map(s => `<span class="px-2 py-1 bg-gray-200 text-gray-700 rounded text-xs">${s}</span>`).join('')}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 text-orange-600">
+              ${icon('clock', 16)} <span class="text-sm font-medium">Expires in 6h 23m</span>
+            </div>
+            <button onclick="setState({ ownerStep: 1 })" class="btn btn-outline">Cancel Invitation</button>
+          </div>
+        `,
+        4: `
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-gray-900">Active Broker Partnership</h3>
+            <div class="bg-green-50 rounded-lg p-4 border border-green-200">
+              <div class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-semibold">R</div>
+                <div>
+                  <p class="font-medium text-gray-900">${mockBroker.name}</p>
+                  <p class="text-sm text-gray-500">${mockBroker.email}</p>
+                  <div class="flex flex-wrap gap-1 mt-2">
+                    ${mockBroker.specialties.map(s => `<span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">${s}</span>`).join('')}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 text-green-600">
+              ${icon('checkCircle', 16)} <span class="text-sm">Partnership established 3 days ago</span>
+            </div>
+            <div class="flex gap-3">
+              <button class="btn btn-disabled">${icon('messageSquare', 18)} Send Message</button>
+              <button onclick="setState({ ownerStep: 5 }); addNotification('Partnership terminated. 24hr cooldown.', 'warning')" class="btn btn-outline-red">End Partnership</button>
+            </div>
+          </div>
+        `,
+        5: `
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-gray-900">Cooldown Period Active</h3>
+            <p class="text-sm text-gray-600">You can request a new broker after the cooldown period.</p>
+            <div class="flex items-center gap-2 text-red-600">
+              ${icon('timer', 20)} <span class="text-2xl font-bold">18h 45m</span> <span class="text-sm">remaining</span>
+            </div>
+            <button class="btn btn-disabled">${icon('userCheck', 18)} Request Broker</button>
+          </div>
+        `
+      };
+
+      return `
+        <div class="card p-6 animate-fadeIn">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2 text-gray-500">
+              ${icon('users', 18)} <span class="text-sm font-medium">Broker Partnership</span>
+            </div>
+            ${badges[state.ownerStep]}
+          </div>
+          ${content[state.ownerStep]}
+        </div>
+      `;
+    }
+
+    function renderOwnerStateDescription() {
+      const data = {
+        1: { title: 'State 1: No Referral', desc: 'The domain has no active broker. Owner can request one.', conditions: ['Domain valuation ≥ $2,000', 'User is org admin', 'Not in cooldown'], actions: ['Click "Request Broker"', 'Learn more about program'] },
+        2: { title: 'State 2: Requested', desc: 'Owner requested a broker. Waiting for admin to assign.', conditions: ['Request submitted', 'In admin queue'], actions: ['Wait for assignment', 'Cancel if needed'] },
+        3: { title: 'State 3: Intro Sent', desc: 'Admin assigned a broker. 8 hours to respond.', conditions: ['Broker assigned', '8-hour countdown active'], actions: ['Wait for broker', 'Cancel invitation'] },
+        4: { title: 'State 4: Active', desc: 'Broker accepted! Partnership is live.', conditions: ['Broker accepted', 'Partnership established'], actions: ['Message broker (soon)', 'End partnership'] },
+        5: { title: 'State 5: Cooldown', desc: 'Partnership ended. 24-hour wait before new request.', conditions: ['Previous partnership ended', '24-hour timer active'], actions: ['Wait for cooldown', 'Returns to State 1'] },
+      };
+      const d = data[state.ownerStep];
+      return `
+        <div class="card p-6">
+          <h4 class="font-semibold text-gray-900 mb-2">${d.title}</h4>
+          <p class="text-gray-600 text-sm mb-4">${d.desc}</p>
+          <div class="space-y-4">
+            <div>
+              <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Conditions</p>
+              <ul class="space-y-1">
+                ${d.conditions.map(c => `<li class="flex items-center gap-2 text-sm text-gray-600">${icon('check', 14, 'text-green-500')} ${c}</li>`).join('')}
+              </ul>
+            </div>
+            <div>
+              <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Actions</p>
+              <ul class="space-y-1">
+                ${d.actions.map(a => `<li class="flex items-center gap-2 text-sm text-gray-600">${icon('arrowRight', 14, 'text-indigo-500')} ${a}</li>`).join('')}
+              </ul>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ============================================
+    // BROKER VIEW
+    // ============================================
+    function renderBrokerView() {
+      const steps = [
+        { id: 1, name: 'Sign Up' },
+        { id: 2, name: 'Apply' },
+        { id: 3, name: 'Pending' },
+        { id: 4, name: 'Approved' },
+        { id: 5, name: 'Receive Invite' },
+        { id: 6, name: 'Accept/Decline' },
+      ];
+
+      return `
+        <div class="container py-8">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+              ${icon('userCheck', 24, 'text-green-600')}
+            </div>
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900">Broker Journey</h2>
+              <p class="text-gray-500">From signup to accepting domain referrals</p>
+            </div>
+          </div>
+
+          <!-- Progress -->
+          <div class="card p-4 mb-6 overflow-x-auto">
+            <div class="flex items-center justify-between min-w-max">
+              ${steps.map((step, i) => `
+                <div class="flex items-center ${i < steps.length - 1 ? 'flex-1' : ''}">
+                  <button onclick="setState({ brokerStep: ${step.id} })" class="flex flex-col items-center cursor-pointer">
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center font-medium ${
+                      state.brokerStep === step.id ? 'bg-green-600 text-white' : 
+                      state.brokerStep > step.id ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600'
+                    }">
+                      ${state.brokerStep > step.id ? icon('check', 20) : step.id}
+                    </div>
+                    <p class="text-xs font-medium mt-2 ${state.brokerStep === step.id ? 'text-green-600' : 'text-gray-500'}">${step.name}</p>
+                  </button>
+                  ${i < steps.length - 1 ? `<div class="flex-1 h-1 mx-2 rounded ${state.brokerStep > step.id ? 'bg-green-500' : 'bg-gray-200'}"></div>` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <div class="grid gap-6 lg-grid-2" style="grid-template-columns: 1fr 1fr">
+            <div class="animate-fadeIn">${renderBrokerStepContent()}</div>
+            <div class="space-y-6">
+              ${renderBrokerStepDescription()}
+              <div class="card p-6">
+                <h4 class="font-semibold text-gray-900 mb-4">Quick Navigation</h4>
+                <div class="grid grid-2 gap-3">
+                  ${state.brokerStep > 1 ? `<button onclick="setState({ brokerStep: state.brokerStep - 1 })" class="btn btn-outline">${icon('arrowLeft', 16)} Previous</button>` : '<div></div>'}
+                  ${state.brokerStep < 6 ? `<button onclick="setState({ brokerStep: state.brokerStep + 1 })" class="btn btn-green">Next ${icon('arrowRight', 16)}</button>` : `<button onclick="setState({ brokerStep: 1 })" class="btn btn-green">${icon('rotateCcw', 16)} Reset</button>`}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderBrokerStepContent() {
+      switch (state.brokerStep) {
+        case 1: return `
+          <div class="card overflow-hidden">
+            <div class="gradient-green p-6 text-white">
+              <h3 class="text-xl font-semibold">Welcome to SiteWarming</h3>
+              <p style="opacity:0.8" class="mt-1">Create your account to get started</p>
+            </div>
+            <div class="p-6 space-y-4">
+              <div><label class="block text-sm font-medium text-gray-700 mb-1">Email</label><input type="email" placeholder="you@example.com"></div>
+              <div><label class="block text-sm font-medium text-gray-700 mb-1">Password</label><input type="password" placeholder="••••••••"></div>
+              <button onclick="setState({ brokerStep: 2 }); addNotification('Account created!', 'success')" class="btn btn-green w-full py-3">Create Account</button>
+            </div>
+          </div>
+        `;
+        case 2: return `
+          <div class="card overflow-hidden">
+            <div class="p-4 border-b bg-gray-50">
+              <div class="flex items-center gap-2 text-sm text-gray-500">${icon('mapPin', 14)} Profile → Join Broker Network</div>
+            </div>
+            <div class="p-6">
+              <h3 class="text-lg font-semibold text-gray-900 mb-4">Apply to Broker Network</h3>
+              <div class="space-y-4">
+                <div><label class="block text-sm font-medium text-gray-700 mb-1">Company Name</label><input placeholder="Your Brokerage LLC"></div>
+                <div><label class="block text-sm font-medium text-gray-700 mb-1">Years of Experience</label>
+                  <select><option>1-2 years</option><option>3-5 years</option><option selected>5+ years</option></select>
+                </div>
+                <div><label class="block text-sm font-medium text-gray-700 mb-1">Specialties</label>
+                  <div class="flex flex-wrap gap-2">${['SaaS', 'E-commerce', 'Tech', 'Healthcare'].map(s => `<label class="flex items-center gap-2 px-3 py-2 border rounded-lg cursor-pointer hover-bg"><input type="checkbox"> <span class="text-sm">${s}</span></label>`).join('')}</div>
+                </div>
+                <div><label class="block text-sm font-medium text-gray-700 mb-1">Bio</label><textarea rows="3" placeholder="Tell us about your experience..."></textarea></div>
+                <button onclick="setState({ brokerStep: 3 }); addNotification('Application submitted!', 'success')" class="btn btn-green w-full py-3">Submit Application</button>
+              </div>
+            </div>
+          </div>
+        `;
+        case 3: return `
+          <div class="card p-8 text-center">
+            <div class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">${icon('clock', 40, 'text-yellow-600')}</div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">Application Under Review</h3>
+            <p class="text-gray-600 mb-6">Our team is reviewing your application.</p>
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-yellow-100 text-yellow-800 rounded-full">
+              <div class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div> Status: Pending Review
+            </div>
+            <div class="mt-6 pt-6 border-t"><p class="text-sm text-gray-500">Typical review time: 1-3 business days</p></div>
+          </div>
+        `;
+        case 4: return `
+          <div class="card overflow-hidden">
+            <div class="bg-green-50 p-6 border-b border-green-100">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">${icon('checkCircle', 24, 'text-green-600')}</div>
+                <div><h3 class="text-lg font-semibold text-green-800">Application Approved!</h3><p class="text-green-600 text-sm">You're now an active broker</p></div>
+              </div>
+            </div>
+            <div class="p-6">
+              <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">${icon('mapPin', 14)} Profile → Broker Profile</div>
+              <div class="space-y-3">
+                <div class="flex items-center justify-between py-3 border-b"><span class="text-gray-600">Status</span><span class="badge badge-green">Active</span></div>
+                <div class="flex items-center justify-between py-3 border-b"><span class="text-gray-600">Deals Closed</span><span class="font-semibold">0</span></div>
+                <div class="flex items-center justify-between py-3"><span class="text-gray-600">Commission Rate</span><span class="font-semibold">15%</span></div>
+              </div>
+              <div class="mt-6 p-4 bg-blue-50 rounded-lg"><p class="text-sm text-blue-800">${icon('info', 16)} You'll receive email invites when matched with domain owners.</p></div>
+            </div>
+          </div>
+        `;
+        case 5: return `
+          <div class="card overflow-hidden">
+            <div class="p-4 border-b bg-blue-50">
+              <div class="flex items-center gap-2">${icon('mail', 20, 'text-blue-600')} <span class="font-medium text-blue-800">New Email Notification</span></div>
+            </div>
+            <div class="p-6">
+              <div class="border rounded-lg overflow-hidden">
+                <div class="bg-gray-50 px-4 py-2 border-b text-sm"><span class="text-gray-500">From:</span> SiteWarming</div>
+                <div class="bg-gray-50 px-4 py-2 border-b text-sm"><span class="text-gray-500">Subject:</span> <span class="font-medium">New Domain Opportunity: ${mockDomain.name}</span></div>
+                <div class="p-4 space-y-4">
+                  <p>Hi Rachel,</p>
+                  <p>You've been invited to represent <strong>${mockDomain.name}</strong> on SiteWarming.</p>
+                  <div class="bg-gray-50 rounded-lg p-4">
+                    <p class="text-sm text-gray-600 mb-2">Domain Details:</p>
+                    <ul class="text-sm space-y-1">
+                      <li>• Estimated Value: <strong>$${mockDomain.valuation.toLocaleString()}</strong></li>
+                      <li>• Category: <strong>${mockDomain.category}</strong></li>
+                    </ul>
+                  </div>
+                  <p class="text-sm text-orange-600">⚠️ This invitation expires in 8 hours.</p>
+                  <button onclick="setState({ brokerStep: 6 })" class="btn btn-green">View Invitation →</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        case 6: return `
+          <div class="card overflow-hidden">
+            <div class="gradient-green p-6 text-white">
+              <h3 class="text-xl font-semibold mb-1">New Domain Opportunity</h3>
+              <p style="opacity:0.8">You've been invited to represent this domain</p>
+            </div>
+            <div class="p-6 space-y-6">
+              <div class="bg-gray-50 rounded-lg p-4 border">
+                <div class="flex items-center gap-3 mb-4">
+                  <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">${icon('building', 24, 'text-indigo-600')}</div>
+                  <div><h4 class="font-semibold text-gray-900">${mockDomain.name}</h4><span class="badge badge-blue">${mockDomain.category}</span></div>
+                </div>
+                <div class="grid grid-2 gap-4">
+                  <div><p class="text-xs text-gray-500">Estimated Value</p><p class="text-lg font-semibold">$${mockDomain.valuation.toLocaleString()}</p></div>
+                  <div><p class="text-xs text-gray-500">Monthly Traffic</p><p class="text-lg font-semibold">${mockDomain.monthlyPageviews.toLocaleString()}</p></div>
+                </div>
+              </div>
+              <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <p class="font-medium text-yellow-800 mb-2">Partnership Terms</p>
+                <ul class="text-sm text-yellow-700 space-y-1">
+                  <li>• 15% commission on successful sale</li>
+                  <li>• SiteWarming receives 25% of your commission</li>
+                  <li>• Owner can terminate at any time</li>
+                </ul>
+              </div>
+              <div class="flex items-center gap-2 text-orange-600">${icon('clock', 16)} <span class="text-sm font-medium">Expires in 6h 23m</span></div>
+              <div class="flex gap-3">
+                <button onclick="addNotification('Invitation accepted!', 'success'); setState({ brokerStep: 4, ownerStep: 4 })" class="btn btn-green flex-1 py-3">Accept Invitation</button>
+                <button onclick="addNotification('Invitation declined.', 'info'); setState({ brokerStep: 4 })" class="btn btn-outline flex-1 py-3">Decline</button>
+              </div>
+            </div>
+          </div>
+        `;
+        default: return '';
+      }
+    }
+
+    function renderBrokerStepDescription() {
+      const data = {
+        1: { title: 'Step 1: Create Account', location: 'sitewarming.com/signup', desc: 'Create a regular user account on SiteWarming.', next: 'After signup, go to Profile to apply.' },
+        2: { title: 'Step 2: Submit Application', location: 'Profile → Join Broker Network', desc: 'Non-brokers see a "Join Broker Network" tab in their profile.', next: 'Application goes to admin review queue.' },
+        3: { title: 'Step 3: Pending Review', location: 'Your email inbox', desc: 'Your application is being reviewed by the team.', next: 'Wait for admin approval (1-3 days).' },
+        4: { title: 'Step 4: Approved Broker', location: 'Profile → Broker Profile', desc: 'Once approved, you can see "My Clients" in the sidebar.', next: 'Wait to receive domain referral invites.' },
+        5: { title: 'Step 5: Receive Invite', location: 'Email notification', desc: 'When matched to a domain, you receive an email.', next: 'Click the link to view and decide.' },
+        6: { title: 'Step 6: Accept or Decline', location: '/broker/accept/:token', desc: 'Review details. 8 hours to decide.', next: 'Accept → Partnership active.' },
+      };
+      const d = data[state.brokerStep];
+      return `
+        <div class="card p-6">
+          <h4 class="font-semibold text-gray-900 mb-2">${d.title}</h4>
+          <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">${icon('mapPin', 14)} ${d.location}</div>
+          <p class="text-gray-600 text-sm mb-4">${d.desc}</p>
+          <div class="p-3 bg-green-50 rounded-lg border border-green-100">
+            <p class="text-sm text-green-800">${icon('arrowRight', 14)} <strong>Next:</strong> ${d.next}</p>
+          </div>
+        </div>
+      `;
+    }
+
+    // ============================================
+    // ADMIN VIEW
+    // ============================================
+    function renderAdminView() {
+      return `
+        <div class="container py-8">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+              ${icon('shield', 24, 'text-orange-600')}
+            </div>
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900">Admin Dashboard</h2>
+              <p class="text-gray-500">Manage applications, queue, and directory</p>
+            </div>
+          </div>
+
+          <div class="card mb-6">
+            <div class="flex border-b">
+              ${[
+                { id: 'applications', label: 'Broker Applications', iconName: 'fileText', count: state.pendingApplications.filter(a => a.status === 'pending').length },
+                { id: 'queue', label: 'Referral Queue', iconName: 'inbox', count: state.brokerQueue.length },
+                { id: 'directory', label: 'Broker Directory', iconName: 'users', count: state.brokerDirectory.length },
+              ].map(tab => `
+                <button onclick="setState({ adminTab: '${tab.id}' })" class="tab flex items-center gap-2 ${state.adminTab === tab.id ? 'active' : ''}">
+                  ${icon(tab.iconName, 18)} ${tab.label}
+                  ${tab.count > 0 ? `<span class="badge badge-orange">${tab.count}</span>` : ''}
+                </button>
+              `).join('')}
+            </div>
+            <div class="p-6 animate-fadeIn">
+              ${state.adminTab === 'applications' ? renderApplicationsTab() : ''}
+              ${state.adminTab === 'queue' ? renderQueueTab() : ''}
+              ${state.adminTab === 'directory' ? renderDirectoryTab() : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderApplicationsTab() {
+      const pending = state.pendingApplications.filter(a => a.status === 'pending');
+      if (pending.length === 0) return `
+        <div class="text-center py-12">
+          <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">${icon('checkCircle', 32, 'text-gray-400')}</div>
+          <h3 class="text-lg font-medium text-gray-900 mb-2">All caught up!</h3>
+          <p class="text-gray-500">No pending broker applications.</p>
+        </div>
+      `;
+      return `
+        <div class="space-y-4">
+          <h3 class="font-semibold text-gray-900">Pending Applications (${pending.length})</h3>
+          <div class="divide-y border rounded-lg">
+            ${pending.map(app => `
+              <div class="p-4 hover-bg">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 font-semibold">${app.name.split(' ').map(n => n[0]).join('')}</div>
+                    <div>
+                      <p class="font-medium text-gray-900">${app.name}</p>
+                      <p class="text-sm text-gray-500">${app.email}</p>
+                      <div class="flex items-center gap-2 mt-1">
+                        <span class="text-xs text-gray-400">${app.experience}</span>
+                        ${app.specialties.map(s => `<span class="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">${s}</span>`).join('')}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <button onclick="approveApplication(${app.id})" class="btn btn-green text-sm">${icon('check', 16)} Approve</button>
+                    <button onclick="rejectApplication(${app.id})" class="btn btn-outline-red text-sm">${icon('x', 16)} Reject</button>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderQueueTab() {
+      if (state.brokerQueue.length === 0) return `
+        <div class="text-center py-12">
+          <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">${icon('inbox', 32, 'text-gray-400')}</div>
+          <h3 class="text-lg font-medium text-gray-900 mb-2">Queue Empty</h3>
+          <p class="text-gray-500">No pending broker requests.</p>
+        </div>
+      `;
+      return `
+        <div class="space-y-4">
+          <h3 class="font-semibold text-gray-900">Pending Requests (${state.brokerQueue.length})</h3>
+          <div class="divide-y border rounded-lg">
+            ${state.brokerQueue.map(item => `
+              <div class="p-4 hover-bg">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">${icon('building', 24, 'text-indigo-600')}</div>
+                    <div>
+                      <p class="font-medium text-gray-900">${item.domain}</p>
+                      <p class="text-sm text-gray-500">$${item.valuation.toLocaleString()} • ${item.category} • Owner: ${item.owner}</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-4">
+                    <span class="text-xs text-gray-400">${item.waitTime}</span>
+                    <button onclick="assignBroker(${item.id})" class="btn btn-orange text-sm">${icon('userPlus', 16)} Assign Broker</button>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderDirectoryTab() {
+      return `
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-semibold text-gray-900">Active Brokers (${state.brokerDirectory.length})</h3>
+            <button class="btn btn-orange text-sm">${icon('plus', 16)} Add Broker</button>
+          </div>
+          <div class="border rounded-lg overflow-hidden">
+            <table>
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-4 py-3">Broker</th>
+                  <th class="px-4 py-3">Specialties</th>
+                  <th class="px-4 py-3 text-center">Accept Rate</th>
+                  <th class="px-4 py-3 text-center">Deals</th>
+                  <th class="px-4 py-3 text-center">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y">
+                ${state.brokerDirectory.map(b => `
+                  <tr class="hover-bg">
+                    <td class="px-4 py-3">
+                      <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-medium text-sm">${b.name.split(' ').map(n => n[0]).join('')}</div>
+                        <div><p class="font-medium text-gray-900 text-sm">${b.name}</p><p class="text-xs text-gray-500">${b.email}</p></div>
+                      </div>
+                    </td>
+                    <td class="px-4 py-3"><div class="flex flex-wrap gap-1">${b.specialties.map(s => `<span class="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">${s}</span>`).join('')}</div></td>
+                    <td class="px-4 py-3 text-center font-medium">${b.acceptRate}%</td>
+                    <td class="px-4 py-3 text-center font-medium">${b.deals}</td>
+                    <td class="px-4 py-3 text-center"><span class="badge badge-green">Active</span></td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    // ============================================
+    // ADMIN ACTIONS
+    // ============================================
+    function approveApplication(id) {
+      const app = state.pendingApplications.find(a => a.id === id);
+      if (app) {
+        app.status = 'approved';
+        state.brokerDirectory.push({ id: Date.now(), name: app.name, email: app.email, specialties: app.specialties, status: 'active', deals: 0, acceptRate: 0 });
+        addNotification(`${app.name} approved as broker!`, 'success');
+        render();
+      }
+    }
+
+    function rejectApplication(id) {
+      const app = state.pendingApplications.find(a => a.id === id);
+      if (app) {
+        app.status = 'rejected';
+        addNotification(`${app.name}'s application rejected.`, 'info');
+        render();
+      }
+    }
+
+    function assignBroker(id) {
+      const item = state.brokerQueue.find(q => q.id === id);
+      const broker = state.brokerDirectory[0];
+      if (item && broker) {
+        state.brokerQueue = state.brokerQueue.filter(q => q.id !== id);
+        addNotification(`${broker.name} assigned to ${item.domain}. Invite sent!`, 'success');
+        setState({ ownerStep: 3 });
+      }
+    }
+
+    // ============================================
+    // NOTIFICATIONS
+    // ============================================
+    function renderNotifications() {
+      if (state.notifications.length === 0) return '';
+      return `
+        <div class="fixed top-20 right-4 z-50 space-y-2">
+          ${state.notifications.map(n => `
+            <div class="animate-slideIn bg-white rounded-lg shadow-lg border p-4 flex items-center gap-3" style="max-width:320px">
+              ${n.type === 'success' ? icon('checkCircle', 20, 'text-green-500') : n.type === 'warning' ? icon('alertTriangle', 20, 'text-yellow-500') : icon('info', 20, 'text-blue-500')}
+              <p class="text-sm text-gray-700">${n.message}</p>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    // ============================================
+    // AUTO DEMO
+    // ============================================
+    function startAutoDemo() {
+      if (state.isAutoPlaying) return;
+      setState({ isAutoPlaying: true, currentView: 'overview' });
+
+      const steps = [
+        { action: () => setState({ currentView: 'broker', brokerStep: 1 }), delay: 1500 },
+        { action: () => setState({ brokerStep: 2 }), delay: 1500 },
+        { action: () => { setState({ brokerStep: 3 }); addNotification('Application submitted!', 'success'); }, delay: 1500 },
+        { action: () => setState({ currentView: 'admin', adminTab: 'applications' }), delay: 1500 },
+        { action: () => approveApplication(1), delay: 1500 },
+        { action: () => setState({ currentView: 'owner', ownerStep: 1 }), delay: 1500 },
+        { action: () => { setState({ ownerStep: 2 }); addNotification('Broker requested!', 'success'); }, delay: 1500 },
+        { action: () => setState({ currentView: 'admin', adminTab: 'queue' }), delay: 1500 },
+        { action: () => assignBroker(1), delay: 1500 },
+        { action: () => setState({ currentView: 'broker', brokerStep: 5 }), delay: 1500 },
+        { action: () => setState({ brokerStep: 6 }), delay: 1500 },
+        { action: () => { addNotification('Invitation accepted!', 'success'); setState({ currentView: 'owner', ownerStep: 4 }); }, delay: 1500 },
+        { action: () => setState({ isAutoPlaying: false }), delay: 1000 },
+      ];
+
+      let i = 0;
+      function run() {
+        if (i >= steps.length) return;
+        steps[i].action();
+        i++;
+        setTimeout(run, steps[i - 1].delay);
+      }
+      run();
+    }
+
+    // ============================================
+    // MAIN RENDER
+    // ============================================
+    function render() {
+      let content = '';
+      switch (state.currentView) {
+        case 'overview': content = renderOverview(); break;
+        case 'owner': content = renderOwnerView(); break;
+        case 'broker': content = renderBrokerView(); break;
+        case 'admin': content = renderAdminView(); break;
+      }
+      document.getElementById('app').innerHTML = renderHeader() + renderNavTabs() + content + renderNotifications();
+    }
+
+    render();
+  </script>
+</body>
+</html>
